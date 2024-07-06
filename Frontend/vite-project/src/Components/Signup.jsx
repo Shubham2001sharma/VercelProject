@@ -6,7 +6,7 @@ function Signup() {
     const [LastName, setLastName] = useState('');
     const [Email, setEmail] = useState('');
     const [Password, setPassword] = useState('');
-
+axios.defaults.withCredentials=true;
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log("Form data:", FirstName, LastName, Email, Password); 
