@@ -12,7 +12,7 @@ function Login() {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log("Form data:", Email, Password); 
-        axios.post('http://localhost:4000/login', {
+        axios.post('http://vercel-project-backend-weld.vercel.app/login', {
             email: Email,
             password: Password
         })
