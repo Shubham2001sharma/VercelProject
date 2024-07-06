@@ -8,6 +8,7 @@ function Login() {
     const [Password, setPassword] = useState('');
 
     const navigate=useNavigate();
+axios.defaults.withCredentials=true;
 
     const handleSubmit = (e) => {
         e.preventDefault();
