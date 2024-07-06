@@ -46,6 +46,9 @@ const User = mongoose.model('User', userSchema);
 app.use(cors());
 app.use(express.json());
 
+app.get("/",(req,res)=>{
+    res.json("shubham sharma");
+})
 // Signup endpoint
 app.post('/signup', async (req, res) => {
     const { firstname, lastname, email, password } = req.body;
