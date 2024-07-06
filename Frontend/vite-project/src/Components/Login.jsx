@@ -16,6 +16,8 @@ axios.defaults.withCredentials=true;
         axios.post('https://vercel-project-backend-weld.vercel.app/login', {
             email: Email,
             password: Password
+        },{
+            withCredentials: true
         })
         .then(response => {
             console.log('login successful:', response.data);

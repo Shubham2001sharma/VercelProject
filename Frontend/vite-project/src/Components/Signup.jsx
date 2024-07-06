@@ -15,6 +15,8 @@ axios.defaults.withCredentials=true;
             lastname: LastName,
             email: Email,
             password: Password
+        },{
+            withCredentials: true
         })
         .then(response => {
             console.log('Signup successful:', response.data);

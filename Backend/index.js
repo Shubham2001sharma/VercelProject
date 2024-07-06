@@ -1,13 +1,17 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
 const express = require("express");
 const app = express();
 const cors = require('cors');
 const bcrypt = require('bcrypt');
 
-// MongoDB connection string including the database name
-const DB = 'mongodb+srv://sharmashubu4600:pKHWJWZI2YKqIj9g@project.beleaer.mongodb.net/test?retryWrites=true&w=majority';
+// Use environment variables
+const DB = process.env.DB;
+const PORT = process.env.PORT || 4000;
+const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS) || 10;
+const CORS_ORIGIN = process.env.CORS_ORIGIN;
 
-// Connect to MongoDB
+// MongoDB connection
 mongoose.connect(DB, {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -17,46 +21,40 @@ mongoose.connect(DB, {
     console.log(error);
 });
 
-// Define a Mongoose schema
+// Define a Mongoose schema and model here (same as before)
 const userSchema = new mongoose.Schema({
-    firstname: {
-        type: String,
-        required: true
-    },
-    lastname: {
-        type: String,
-        required: true
-    },
-    email: {
-        type: String,
-        required: true,
-        unique: true 
-    },
-    password: {
-        type: String,
-        required: true
-    }
+    firstname: { type: String, required: true },
+    lastname: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true }
 });
 
-
-// Create a Mongoose model
 const User = mongoose.model('User', userSchema);
 
 // Middleware
 app.use(cors({
-    "origin":["https://vercel-project-frontend.vercel.app"],
-    "methods":["GET","POST"],
-    "credentials": true
-}))
+    origin: CORS_ORIGIN,
+    methods: 'GET,POST,PUT,DELETE',
+    allowedHeaders: 'Content-Type,Authorization',
+    credentials: true
+}));
+app.options('*', cors({
+    origin: CORS_ORIGIN,
+    methods: 'GET,POST,PUT,DELETE',
+    allowedHeaders: 'Content-Type,Authorization',
+    credentials: true
+}));
+
 app.use(express.json());
 
-app.get("/",(req,res)=>{
+app.get("/", (req, res) => {
     res.json("shubham sharma");
-})
+});
+
 // Signup endpoint
 app.post('/signup', async (req, res) => {
     const { firstname, lastname, email, password } = req.body;
- console.log(firstname, lastname, email, password)
+    console.log(firstname, lastname, email, password);
 
     try {
         // Check if user already exists
@@ -66,7 +64,7 @@ app.post('/signup', async (req, res) => {
         }
 
         // Hash the password
-        const salt = await bcrypt.genSalt(10);
+        const salt = await bcrypt.genSalt(SALT_ROUNDS);
         const hashedPassword = await bcrypt.hash(password, salt);
 
         // Create a new user instance
@@ -108,9 +106,6 @@ app.post('/login', async (req, res) => {
 
         // If credentials are correct, login successful
         res.status(200).json({ message: "Login successful", user });
-        
-        // Optionally, you can redirect to another page using client-side JavaScript
-        // Example: res.redirect('/dashboard');
 
     } catch (error) {
         console.error("Error logging in:", error);
@@ -119,7 +114,6 @@ app.post('/login', async (req, res) => {
 });
 
 // Start the server
-const port = 4000;
-app.listen(port, () => {
-    console.log(`App is running on port ${port}`);
+app.listen(PORT, () => {
+    console.log(`App is running on port ${PORT}`);
 });
