@@ -44,7 +44,7 @@ const User = mongoose.model('User', userSchema);
 
 // Middleware
 app.use(cors({
-    origin:[https://vercel-project-frontend.vercel.app/],
+    origin:[https://vercel-project-frontend.vercel.app],
     methods:['POST','GET'],
     credentials: true
 }));
