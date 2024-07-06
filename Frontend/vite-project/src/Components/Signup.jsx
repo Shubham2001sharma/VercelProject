@@ -10,7 +10,7 @@ function Signup() {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log("Form data:", FirstName, LastName, Email, Password); 
-        axios.post('http://localhost:4000/signup', {
+        axios.post('http:vercel-project-backend-weld.vercel.app/signup', {
             firstname: FirstName,
             lastname: LastName,
             email: Email,
